@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://genixtools.github.io/sitemap.xml

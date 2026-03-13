@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://genixtools.github.io/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://genixtools.github.io/typing-test/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://genixtools.github.io/word-counter/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://genixtools.github.io/bmi-calculator/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://genixtools.github.io/age-calculator/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://genixtools.github.io/password-generator/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+</urlset>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typing Test — Measure WPM & Accuracy | Genix Tools</title>
+  <meta name="description"
+    content="Free online typing speed test. Measure your words per minute (WPM) and accuracy. Practice and improve your typing skills instantly." />
+  <meta name="keywords"
+    content="typing test, typing speed, WPM test, words per minute, typing accuracy, online typing test" />
+  <link rel="canonical" href="https://genixtools.github.io/typing-test/" />
+  <link rel="icon" type="image/jpg" href="favicon.jpg">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Typing Speed Test","url":"https://genixtools.github.io/typing-test/","description":"Free online typing speed test measuring WPM and accuracy","applicationCategory":"UtilitiesApplication"}
+  </script>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    .passage-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 1.25rem;
+      /* bigger text */
+      line-height: 2;
+      /* more comfortable reading */
+      letter-spacing: 0.03em;
+      /* slightly wider letters */
+      user-select: none;
+      position: relative;
+      min-height: 100px;
+    }
+
+    .passage-box .char {
+      transition: color 0.1s;
+    }
+
+    .passage-box .char.correct {
+      color: var(--accent3);
+    }
+
+    .passage-box .char.wrong {
+      color: var(--accent2);
+      background: rgba(255, 101, 132, 0.15);
+      border-radius: 2px;
+    }
+
+    .passage-box .char.current {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 2px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.4
+      }
+    }
+
+    #type-input {
+      position: absolute;
+      opacity: 0;
+      left: -9999px;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .stat-mini {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .stat-mini .v {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-mini .l {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .difficulty-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .diff-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .diff-btn.active,
+    .diff-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .cursor-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(3px);
+      cursor: text;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      transition: opacity 0.3s;
+    }
+
+    .cursor-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #result-section {
+      display: none;
+    }
+
+    #result-section.visible {
+      display: block;
+    }
+
+    #passage-text {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">⚡ Genix<span>Tools</span></a>
+      <div class="nav-links">
+        <a href="/typing-test/">Typing Test</a>
+        <a href="/word-counter/">Word Counter</a>
+        <a href="/bmi-calculator/">BMI</a>
+        <a href="/age-calculator/">Age Calc</a>
+        <a href="/password-generator/">Password Gen</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-hero">
+      <h1>⌨️ <em>Typing</em> Speed Test</h1>
+      <p>Find out how fast you type. Measure WPM and accuracy in 60 seconds or less.</p>
+    </div>
+
+    <div class="ad-slot container"><!-- AdSense --></div>
+
+    <div class="container">
+      <div class="tool-card">
+
+        <div class="difficulty-btns">
+          <span style="color:var(--text-muted);font-size:.85rem;align-self:center;margin-right:4px;">Difficulty:</span>
+          <button class="diff-btn active" data-level="easy">Easy</button>
+          <button class="diff-btn" data-level="medium">Medium</button>
+          <button class="diff-btn" data-level="hard">Hard</button>
+        </div>
+
+        <div class="difficulty-btns" style="margin-top:10px">
+          <span style="color:var(--text-muted);font-size:.85rem;align-self:center;margin-right:4px;">Time:</span>
+
+          <button class="diff-btn time-btn active" data-time="15">15s</button>
+          <button class="diff-btn time-btn" data-time="30">30s</button>
+          <button class="diff-btn time-btn" data-time="60">60s</button>
+          <button class="diff-btn time-btn" data-time="120">120s</button>
+        </div>
+
+        <div class="stats-bar">
+          <div class="stat-mini">
+            <div class="v" id="wpm-live">0</div>
+            <div class="l">WPM</div>
+          </div>
+          <div class="stat-mini">
+            <div class="v" id="acc-live">100%</div>
+            <div class="l">Accuracy</div>
+          </div>
+          <div class="stat-mini">
+            <div class="v" id="timer-live">60</div>
+            <div class="l">Seconds</div>
+          </div>
+          <div class="stat-mini">
+            <div class="v" id="errors-live">0</div>
+            <div class="l">Errors</div>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="time-bar" style="width:100%"></div>
+        </div>
+
+        <div class="passage-box" id="passage-box" onclick="startTest()">
+          <div id="passage-text"></div>
+          <div class="cursor-overlay" id="overlay">🖱️ Click here to start typing</div>
+        </div>
+        <input type="text" id="type-input" autocomplete="off" autocorrect="off" autocapitalize="off"
+          spellcheck="false" />
+
+        <div class="flex gap-2 mt-4" style="flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="resetTest()">↺ Restart</button>
+          <button class="btn btn-ghost" onclick="newPassage()">New Text</button>
+        </div>
+
+        <!-- Results -->
+        <div class="result-box" id="result-section">
+          <h3 class="fw-bold" style="margin-bottom:16px;">🎯 Your Results</h3>
+          <div class="result-grid">
+            <div class="stat-pill">
+              <div class="value" id="r-wpm">0</div>
+              <div class="label">Words / Min</div>
+            </div>
+            <div class="stat-pill">
+              <div class="value" id="r-acc">0%</div>
+              <div class="label">Accuracy</div>
+            </div>
+            <div class="stat-pill">
+              <div class="value" id="r-words">0</div>
+              <div class="label">Words Typed</div>
+            </div>
+            <div class="stat-pill">
+              <div class="value" id="r-errors">0</div>
+              <div class="label">Errors</div>
+            </div>
+          </div>
+          <p id="r-feedback" class="text-muted text-sm mt-4" style="text-align:center;"></p>
+        </div>
+
+      </div>
+
+      <!-- About -->
+      <div class="tool-card" style="font-size:.92rem;color:var(--text-muted);">
+        <h2 class="fw-bold" style="color:var(--text);margin-bottom:12px;">About This Typing Test</h2>
+        <p>This free typing speed test measures your <strong style="color:var(--text)">Words Per Minute (WPM)</strong>
+          and <strong style="color:var(--text)">accuracy</strong>. The average typist types around 40 WPM. Professional
+          typists typically exceed 75 WPM. Practice regularly to improve your score.</p>
+        <ul style="margin:12px 0 0 18px;line-height:2;">
+          <li>Average typing speed: <strong style="color:var(--text)">40 WPM</strong></li>
+          <li>Good typing speed: <strong style="color:var(--text)">60+ WPM</strong></li>
+          <li>Professional speed: <strong style="color:var(--text)">75+ WPM</strong></li>
+          <li>Expert speed: <strong style="color:var(--text)">100+ WPM</strong></li>
+        </ul>
+      </div>
+
+      <div class="ad-slot"><!-- AdSense Bottom --></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 <strong>Genix Tools</strong> · <a href="/">← Back to all tools</a></p>
+  </footer>
+
+  <script>const wordPools = {
+      easy: [
+        "cat", "dog", "sun", "tree", "blue", "happy", "run", "play", "home", "bird",
+        "water", "green", "book", "light", "road", "sky", "soft", "leaf", "smile", "rain"
+      ],
+      medium: [
+        "technology", "system", "design", "future", "people", "change", "growth",
+        "project", "remote", "network", "process", "energy", "market", "create",
+        "improve", "method", "result", "effect", "science", "digital"
+      ],
+      hard: [
+        "quantum", "philosophical", "cryptographic", "algorithm", "complexity",
+        "entanglement", "paradigm", "optimization", "probability", "architecture",
+        "infrastructure", "synchronization", "computation", "transformation"
+      ]
+    };
+
+    let currentLevel = 'easy';
+    let currentText = '';
+    let charIndex = 0;
+    let errors = 0;
+    let timer = null;
+    let timeLeft = 60;
+    let testDuration = 60;
+    let started = false;
+    let totalKeystrokes = 0;
+
+    function generateText() {
+      const words = wordPools[currentLevel];
+      const length = 80 + Math.floor(Math.random() * 40);
+      let arr = [];
+      for (let i = 0; i < length; i++) {
+        arr.push(words[Math.floor(Math.random() * words.length)]);
+      }
+      return arr.join(" ");
+    }
+
+    function renderPassage() {
+      const box = document.getElementById('passage-text');
+      box.innerHTML = currentText.split('').map((c, i) => `<span class="char" id="c${i}">${c}</span>`).join('');
+
+      const first = document.getElementById('c0');
+      if (first) first.classList.add('current');
+    }
+
+    function startTest() {
+      if (started) return;
+
+      document.getElementById('overlay').classList.add('hidden');
+      document.getElementById('type-input').focus();
+    }
+
+    function resetTest() {
+      clearInterval(timer);
+
+      charIndex = 0;
+      errors = 0;
+      totalKeystrokes = 0;
+      timeLeft = testDuration;
+      started = false;
+
+      document.getElementById('type-input').value = '';
+      document.getElementById('overlay').classList.remove('hidden');
+      document.getElementById('overlay').textContent = '🖱️ Click here to start typing';
+
+      document.getElementById('wpm-live').textContent = '0';
+      document.getElementById('acc-live').textContent = '100%';
+      document.getElementById('errors-live').textContent = '0';
+      document.getElementById('timer-live').textContent = timeLeft;
+
+      document.getElementById('time-bar').style.width = '100%';
+
+      document.getElementById('result-section').classList.remove('visible');
+
+      renderPassage();
+    }
+
+    function newPassage() {
+      currentText = generateText();
+      resetTest();
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+
+        document.getElementById('timer-live').textContent = timeLeft;
+
+        document.getElementById('time-bar').style.width =
+          (timeLeft / testDuration * 100) + "%";
+
+        if (timeLeft <= 0) {
+          endTest();
+        }
+
+      }, 1000);
+    }
+
+    function endTest() {
+      clearInterval(timer);
+      started = false;
+
+      const minutes = testDuration / 60;
+      const words = charIndex / 5;
+
+      const wpm = Math.round(words / minutes);
+      const acc = totalKeystrokes
+        ? Math.round(((totalKeystrokes - errors) / totalKeystrokes) * 100)
+        : 100;
+
+      document.getElementById('r-wpm').textContent = wpm;
+      document.getElementById('r-acc').textContent = acc + "%";
+      document.getElementById('r-words').textContent = Math.round(words);
+      document.getElementById('r-errors').textContent = errors;
+
+      let feedback = '';
+      if (wpm >= 100) feedback = '🏆 Incredible! You type extremely fast.';
+      else if (wpm >= 75) feedback = '🌟 Excellent typing speed.';
+      else if (wpm >= 60) feedback = '👍 Great job!';
+      else if (wpm >= 40) feedback = '📈 Good speed, keep practicing.';
+      else feedback = '🔄 Practice more to improve speed.';
+
+      document.getElementById('r-feedback').textContent = feedback;
+
+      document.getElementById('result-section').classList.add('visible');
+
+      const overlay = document.getElementById('overlay');
+      overlay.classList.remove('hidden');
+      overlay.textContent = '🖱️ Click to try again';
+      overlay.onclick = resetTest;
+    }
+
+    document.getElementById('type-input').addEventListener('keydown', (e) => {
+
+      if (!started) {
+        started = true;
+        startTimer();
+      }
+
+      if (e.key === 'Backspace') {
+
+        if (charIndex > 0) {
+
+          charIndex--;
+
+          const span = document.getElementById('c' + charIndex);
+
+          const wasWrong = span.classList.contains('wrong');
+
+          span.classList.remove('correct', 'wrong', 'current');
+
+          if (wasWrong && errors > 0) {
+            errors--;
+            document.getElementById('errors-live').textContent = errors;
+          }
+
+          const prev = document.getElementById('c' + charIndex);
+          if (prev) prev.classList.add('current');
+
+          totalKeystrokes = Math.max(0, totalKeystrokes - 1);
+
+        }
+
+        return;
+      }
+
+      if (e.key.length !== 1) return;
+
+      const expected = currentText[charIndex];
+      const typed = e.key;
+
+      totalKeystrokes++;
+
+      const span = document.getElementById('c' + charIndex);
+      if (span) span.classList.remove('current');
+
+      if (typed === expected) {
+        if (span) span.classList.add('correct');
+      } else {
+        if (span) span.classList.add('wrong');
+        errors++;
+        document.getElementById('errors-live').textContent = errors;
+      }
+
+      charIndex++;
+
+      const next = document.getElementById('c' + charIndex);
+      if (next) next.classList.add('current');
+      else endTest();
+
+      const elapsed = (testDuration - timeLeft) || 1;
+
+      const wpm = Math.round((charIndex / 5) / (elapsed / 60));
+      const acc = Math.round(((totalKeystrokes - errors) / totalKeystrokes) * 100);
+
+      document.getElementById('wpm-live').textContent = wpm;
+      document.getElementById('acc-live').textContent = acc + "%";
+    });
+
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (btn.dataset.level) {
+          currentLevel = btn.dataset.level;
+          currentText = generateText();
+          resetTest();
+        }
+      });
+    });
+
+    document.querySelectorAll('.time-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        testDuration = parseInt(btn.dataset.time);
+        timeLeft = testDuration;
+
+        document.getElementById('timer-live').textContent = timeLeft;
+
+        resetTest();
+      });
+    });
+
+    currentText = generateText();
+    renderPassage();
+  </script>
+</body>
+
+</html>

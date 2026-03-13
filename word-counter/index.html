@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Counter — Count Words, Characters & Reading Time | Genix Tools</title>
+  <meta name="description" content="Free online word counter tool. Instantly count words, characters, sentences, paragraphs, and estimated reading time. Perfect for essays, articles, and social media." />
+  <meta name="keywords" content="word counter, character counter, word count, reading time calculator, text analyzer, online word counter" />
+  <link rel="canonical" href="https://genixtools.github.io/word-counter/" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    textarea#main-input {
+      min-height: 240px;
+      resize: vertical;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .limit-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .keyword-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .keyword-tag {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .keyword-tag strong { color: var(--text); }
+    .platform-limits {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px; margin-top: 16px;
+    }
+    .plimit {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px; text-align: center;
+    }
+    .plimit .pname { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+    .plimit .pleft { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; }
+    .plimit.over .pleft { color: var(--accent2); }
+    .plimit.ok .pleft { color: var(--accent3); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">⚡ Genix<span>Tools</span></a>
+    <div class="nav-links">
+      <a href="/typing-test/">Typing Test</a>
+      <a href="/word-counter/">Word Counter</a>
+      <a href="/bmi-calculator/">BMI</a>
+      <a href="/age-calculator/">Age Calc</a>
+      <a href="/password-generator/">Password Gen</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-hero">
+    <h1>📝 <em>Word</em> Counter</h1>
+    <p>Paste or type your text to instantly analyze words, characters, sentences, reading time, and more.</p>
+  </div>
+
+  <div class="ad-slot container"><!-- AdSense --></div>
+
+  <div class="container">
+    <div class="tool-card">
+      <label for="main-input">Your Text</label>
+      <textarea id="main-input" placeholder="Start typing or paste your text here…" oninput="analyze()"></textarea>
+
+      <div class="limit-row">
+        <label style="margin:0;" for="word-limit">Word limit alert:</label>
+        <input type="number" id="word-limit" placeholder="e.g. 500" style="width:120px;" oninput="analyze()" />
+        <button class="btn btn-ghost" onclick="clearText()" style="margin-left:auto;">✕ Clear</button>
+        <button class="btn btn-primary" onclick="copyText()">📋 Copy</button>
+      </div>
+
+      <div class="result-grid mt-6">
+        <div class="stat-pill"><div class="value" id="s-words">0</div><div class="label">Words</div></div>
+        <div class="stat-pill"><div class="value" id="s-chars">0</div><div class="label">Characters</div></div>
+        <div class="stat-pill"><div class="value" id="s-chars-ns">0</div><div class="label">Chars (no spaces)</div></div>
+        <div class="stat-pill"><div class="value" id="s-sents">0</div><div class="label">Sentences</div></div>
+        <div class="stat-pill"><div class="value" id="s-paras">0</div><div class="label">Paragraphs</div></div>
+        <div class="stat-pill"><div class="value" id="s-read">0 min</div><div class="label">Reading Time</div></div>
+        <div class="stat-pill"><div class="value" id="s-speak">0 min</div><div class="label">Speaking Time</div></div>
+        <div class="stat-pill"><div class="value" id="s-unique">0</div><div class="label">Unique Words</div></div>
+      </div>
+
+      <!-- Word Limit Progress -->
+      <div id="limit-section" style="display:none;margin-top:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="text-sm text-muted">Word limit progress</span>
+          <span class="text-sm" id="limit-label"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="limit-bar" style="width:0%"></div></div>
+      </div>
+
+      <!-- Top Keywords -->
+      <div id="keyword-section" style="margin-top:20px;display:none;">
+        <p class="text-sm text-muted" style="margin-bottom:8px;">Top keywords:</p>
+        <div class="keyword-list" id="keyword-list"></div>
+      </div>
+
+      <!-- Platform Limits -->
+      <div style="margin-top:24px;">
+        <p class="text-sm text-muted" style="margin-bottom:10px;">Platform character limits:</p>
+        <div class="platform-limits">
+          <div class="plimit" id="pl-tweet"><div class="pname">Twitter / X</div><div class="pleft" id="pl-tweet-v">280</div></div>
+          <div class="plimit" id="pl-ig"><div class="pname">Instagram</div><div class="pleft" id="pl-ig-v">2200</div></div>
+          <div class="plimit" id="pl-meta"><div class="pname">Facebook</div><div class="pleft" id="pl-meta-v">63206</div></div>
+          <div class="plimit" id="pl-yt"><div class="pname">YouTube Desc</div><div class="pleft" id="pl-yt-v">5000</div></div>
+          <div class="plimit" id="pl-seo"><div class="pname">SEO Meta Desc</div><div class="pleft" id="pl-seo-v">160</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-slot"><!-- AdSense Bottom --></div>
+
+    <!-- FAQ for SEO -->
+    <div class="tool-card" style="font-size:.92rem;color:var(--text-muted);">
+      <h2 class="fw-bold" style="color:var(--text);margin-bottom:16px;">Frequently Asked Questions</h2>
+      <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--text);font-weight:500;">How is reading time calculated?</summary>
+        <p style="margin-top:8px;">Reading time is based on an average reading speed of <strong style="color:var(--text)">200 words per minute</strong> for adults. Speaking time uses 130 WPM.</p>
+      </details>
+      <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--text);font-weight:500;">Does this tool store my text?</summary>
+        <p style="margin-top:8px;">No. All analysis is done locally in your browser. Nothing is sent to any server.</p>
+      </details>
+      <details>
+        <summary style="cursor:pointer;color:var(--text);font-weight:500;">What counts as a word?</summary>
+        <p style="margin-top:8px;">Any sequence of characters separated by spaces. Punctuation attached to words is included with the word (e.g., "hello," counts as one word).</p>
+      </details>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>© 2025 <strong>Genix Tools</strong> · <a href="/">← Back to all tools</a></p>
+</footer>
+
+<script>
+function analyze() {
+  const text = document.getElementById('main-input').value;
+  const words = text.trim() === '' ? [] : text.trim().split(/\s+/);
+  const wordCount = words.length === 1 && words[0] === '' ? 0 : words.length;
+  const charCount = text.length;
+  const charNoSpace = text.replace(/\s/g, '').length;
+  const sentences = text === '' ? 0 : (text.match(/[^.!?]+[.!?]+/g) || []).length;
+  const paras = text === '' ? 0 : text.split(/\n+/).filter(p => p.trim() !== '').length;
+  const readTime = Math.ceil(wordCount / 200);
+  const speakTime = Math.ceil(wordCount / 130);
+  const uniqueWords = new Set(words.map(w => w.toLowerCase().replace(/[^a-z]/g, ''))).size;
+
+  document.getElementById('s-words').textContent = wordCount.toLocaleString();
+  document.getElementById('s-chars').textContent = charCount.toLocaleString();
+  document.getElementById('s-chars-ns').textContent = charNoSpace.toLocaleString();
+  document.getElementById('s-sents').textContent = sentences;
+  document.getElementById('s-paras').textContent = paras;
+  document.getElementById('s-read').textContent = readTime < 1 ? '< 1 min' : readTime + ' min';
+  document.getElementById('s-speak').textContent = speakTime < 1 ? '< 1 min' : speakTime + ' min';
+  document.getElementById('s-unique').textContent = wordCount === 0 ? 0 : uniqueWords;
+
+  // Word limit
+  const limit = parseInt(document.getElementById('word-limit').value);
+  if (limit > 0) {
+    document.getElementById('limit-section').style.display = 'block';
+    const pct = Math.min((wordCount / limit) * 100, 100);
+    document.getElementById('limit-bar').style.width = pct + '%';
+    document.getElementById('limit-label').textContent = wordCount + ' / ' + limit;
+    document.getElementById('limit-bar').style.background = wordCount > limit
+      ? 'linear-gradient(90deg, #ff6584, #ff6584)'
+      : 'linear-gradient(90deg, var(--accent), var(--accent3))';
+  } else {
+    document.getElementById('limit-section').style.display = 'none';
+  }
+
+  // Keywords
+  if (wordCount > 3) {
+    const freq = {};
+    words.forEach(w => {
+      const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+      const stopwords = ['the','a','an','and','or','but','in','on','at','to','for','of','is','it','that','this','was','are','with','as','be','by','from','not','have','he','she','they','we','you','i','his','her','its','our'];
+      if (clean.length > 3 && !stopwords.includes(clean)) freq[clean] = (freq[clean] || 0) + 1;
+    });
+    const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    if (sorted.length) {
+      document.getElementById('keyword-section').style.display = 'block';
+      document.getElementById('keyword-list').innerHTML = sorted.map(([w,c]) =>
+        `<span class="keyword-tag"><strong>${w}</strong> ×${c}</span>`).join('');
+    }
+  } else {
+    document.getElementById('keyword-section').style.display = 'none';
+  }
+
+  // Platform limits
+  updatePlatform('pl-tweet', 'pl-tweet-v', charCount, 280);
+  updatePlatform('pl-ig', 'pl-ig-v', charCount, 2200);
+  updatePlatform('pl-meta', 'pl-meta-v', charCount, 63206);
+  updatePlatform('pl-yt', 'pl-yt-v', charCount, 5000);
+  updatePlatform('pl-seo', 'pl-seo-v', charCount, 160);
+}
+
+function updatePlatform(id, vid, chars, limit) {
+  const el = document.getElementById(id);
+  const vel = document.getElementById(vid);
+  const left = limit - chars;
+  el.className = 'plimit ' + (left < 0 ? 'over' : 'ok');
+  vel.textContent = left < 0 ? left + ' over' : left + ' left';
+}
+
+function clearText() {
+  document.getElementById('main-input').value = '';
+  analyze();
+}
+
+function copyText() {
+  const text = document.getElementById('main-input').value;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 1500);
+  });
+}
+</script>
+</body>
+</html>

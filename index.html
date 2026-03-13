@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genix Tools — Free Online Utility Tools</title>
+  <meta name="description"
+    content="Genix Tools offers free, fast, and easy-to-use online tools — Typing Test, Word Counter, BMI Calculator, Age Calculator, Password Generator, and more." />
+  <meta name="keywords"
+    content="online tools, typing test, word counter, bmi calculator, age calculator, password generator, free tools" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://genixtools.github.io/" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Genix Tools — Free Online Utility Tools" />
+  <meta property="og:description" content="Fast, free, browser-based tools for everyday tasks." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://genixtools.github.io/" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Genix Tools","url":"https://genixtools.github.io/","description":"Free online utility tools","potentialAction":{"@type":"SearchAction","target":"https://genixtools.github.io/?q={search_term_string}","query-input":"required name=search_term_string"}}
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/jpg" href="favicon.jpg">
+  <style>
+    /* HOME SPECIFIC */
+    .hero {
+      padding: 120px 24px 80px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(108, 99, 255, 0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 80% 80%, rgba(255, 101, 132, 0.08) 0%, transparent 60%);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108, 99, 255, 0.12);
+      border: 1px solid rgba(108, 99, 255, 0.25);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .line2 
+    {
+    color: var(--accent);
+    }
+
+    .hero p  {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 540px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* TOOLS GRID */
+    .tools-section {
+      padding: 80px 24px;
+    }
+
+    .tools-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tool-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .tool-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-item:hover::before {
+      opacity: 1;
+    }
+
+    .tool-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+    }
+
+    .tool-item h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tool-item p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .tool-item .arrow {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--border);
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+
+    .tool-item:hover .arrow {
+      color: var(--accent);
+      transform: translateY(-50%) translateX(3px);
+    }
+
+    .tool-tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(108, 99, 255, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(108, 99, 255, 0.2);
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 60px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .feature h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* ICON COLORS */
+    .ic-typing {
+      background: rgba(108, 99, 255, 0.15);
+    }
+
+    .ic-word {
+      background: rgba(67, 233, 123, 0.15);
+    }
+
+    .ic-bmi {
+      background: rgba(255, 101, 132, 0.15);
+    }
+
+    .ic-age {
+      background: rgba(255, 189, 64, 0.15);
+    }
+
+    .ic-pass {
+      background: rgba(0, 209, 255, 0.15);
+    }
+
+    /* LOGO */
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      width: 68px;
+      height: 68px;
+      object-fit: cover;
+      object-position: top;
+      /* keeps only the icon */
+      border-radius: 8px;
+    }
+
+    /* crop the bottom where the text is */
+    .logo {
+      width: 68px;
+      height: 68px;
+      overflow: hidden;
+    }
+
+    /* responsive */
+    @media (max-width:768px) {
+      .logo-img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <img src="logo-removebg-preview.png" alt="Genix Tools Logo" class="logo-img">
+      </a>
+      <div class="nav-links">
+        <a href="/typing-test/">Typing Test</a>
+        <a href="/word-counter/">Word Counter</a>
+        <a href="/bmi-calculator/">BMI</a>
+        <a href="/age-calculator/">Age Calc</a>
+        <a href="/password-generator/">Password Gen</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-eyebrow">✦ 100% Free &amp; No Sign-up Required</div>
+      <h1>Tools Built for<br><span class="line2">Real Productivity</span></h1>
+      <p>Fast, free, browser-based utilities. No ads that block content. No tracking. Just tools that work.</p>
+      <div class="hero-actions">
+        <a href="#tools" class="btn btn-primary">Browse Tools →</a>
+        <a href="/typing-test/" class="btn btn-ghost">Try Typing Test</a>
+      </div>
+    </section>
+
+    <!-- AdSense Top Banner -->
+    <div class="ad-slot container">
+      <!-- Google AdSense: Replace with your ad code -->
+      <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script> -->
+      Advertisement
+    </div>
+
+    <section class="tools-section" id="tools">
+      <h2>All Tools</h2>
+      <p class="section-sub">Click any tool to get started instantly — no downloads, no accounts.</p>
+
+      <div class="tools-grid">
+
+        <a href="/typing-test/" class="tool-item">
+          <div class="tool-icon ic-typing">⌨️</div>
+          <h3>Typing Test</h3>
+          <p>Measure your typing speed in WPM and accuracy. Practice with real sentences.</p>
+          <span class="tool-tag">Productivity</span>
+          <span class="arrow">→</span>
+        </a>
+
+        <a href="/word-counter/" class="tool-item">
+          <div class="tool-icon ic-word">📝</div>
+          <h3>Word Counter</h3>
+          <p>Count words, characters, sentences, and reading time. Great for essays and articles.</p>
+          <span class="tool-tag">Writing</span>
+          <span class="arrow">→</span>
+        </a>
+
+        <a href="/bmi-calculator/" class="tool-item">
+          <div class="tool-icon ic-bmi">⚖️</div>
+          <h3>BMI Calculator</h3>
+          <p>Calculate your Body Mass Index with metric or imperial units. Understand your result.</p>
+          <span class="tool-tag">Health</span>
+          <span class="arrow">→</span>
+        </a>
+
+        <a href="/age-calculator/" class="tool-item">
+          <div class="tool-icon ic-age">🎂</div>
+          <h3>Age Calculator</h3>
+          <p>Find your exact age in years, months, and days. Plus days until your next birthday.</p>
+          <span class="tool-tag">Utility</span>
+          <span class="arrow">→</span>
+        </a>
+
+        <a href="/password-generator/" class="tool-item">
+          <div class="tool-icon ic-pass">🔐</div>
+          <h3>Password Generator</h3>
+          <p>Create strong, random passwords with custom length and character sets. Stay secure.</p>
+          <span class="tool-tag">Security</span>
+          <span class="arrow">→</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- AdSense Mid Banner -->
+    <div class="ad-slot container">
+      <!-- Google AdSense: Replace with your ad code -->
+      Advertisement
+    </div>
+
+    <section class="features">
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <h4>Instant Load</h4>
+          <p>Pure HTML/CSS/JS — no frameworks, no build steps. Loads in under 1 second.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <h4>Privacy First</h4>
+          <p>Everything runs in your browser. Your data never touches our servers.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📱</div>
+          <h4>Mobile Ready</h4>
+          <p>Fully responsive design that works on phones, tablets, and desktops.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💸</div>
+          <h4>Always Free</h4>
+          <p>No subscriptions, no sign-ups. All tools are completely free to use.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 <strong>Genix Tools</strong> · <a href="/">Home</a> · All tools run locally in your browser.</p>
+  </footer>
+
+</body>
+
+</html>
